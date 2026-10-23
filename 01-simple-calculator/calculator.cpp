@@ -1,7 +1,37 @@
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <iostream>
+#include <string>
+#include <limits>
 using namespace std;
 
+int readInt(const string& prompt) {
+    int x;
+    while (true) {
+        cout << prompt;
+        if (cin >> x) return x;
+        cout << "输入无效，请输入一个数字！\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+}
+
+double readDouble(const string& prompt) {
+    double x;
+    while (true) {
+        cout << prompt;
+        if (cin >> x) return x;
+        cout << "输入无效，请输入一个数字！\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+}
+
 int main() {
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+#endif
     int choice;
     while (true) {
         // 主界面
@@ -11,8 +41,7 @@ int main() {
         cout << "3. 乘法 (*)\n";
         cout << "4. 除法 (/)\n";
         cout << "0. 退出\n";
-        cout << "请选择操作：";
-        cin >> choice;
+        choice = readInt("请选择操作：");
 
         if (choice == 0) {
             cout << "已退出，再见！\n";
@@ -36,10 +65,8 @@ int main() {
         while (!backToMenu) {
             cout << "\n---- 当前运算：" << name << " (" << op << ") ----\n";
             double a, b;
-            cout << "请输入第一个数：";
-            cin >> a;
-            cout << "请输入第二个数：";
-            cin >> b;
+            a = readDouble("请输入第一个数：");
+            b = readDouble("请输入第二个数：");
 
             double result;
             bool ok = true;
@@ -65,8 +92,7 @@ int main() {
                 cout << "\n请选择：\n";
                 cout << "1. 继续计算（同一运算符）\n";
                 cout << "2. 返回主界面\n";
-                cout << "请选择：";
-                cin >> after;
+                after = readInt("请选择：");
                 if (after == 1) break;
                 if (after == 2) { backToMenu = true; break; }
                 cout << "无效选择，请重新输入！\n";
